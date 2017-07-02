@@ -24,10 +24,11 @@ public class MainActivity extends AppCompatActivity {
         // and pass the context, which is the current activity.
         mDbHelper = new HabitDbHelper(this);
         insertHabits();
-        displayDatabaseInfo();
+        Cursor cursor = readData();
+        displayDatabaseInfo(cursor);
     }
 
-    private void displayDatabaseInfo() {
+    private Cursor readData(){
         // Create and/or open a database to read from it
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 HabitEntry.COLUMN_HABIT_NAME,
                 HabitEntry.COLUMN_HABIT_DURATION,
         };
-
+        //query database
         Cursor cursor = db.query(HabitContract.HabitEntry.TABLE_NAME,
                 projection,
                 null,
@@ -43,9 +44,11 @@ public class MainActivity extends AppCompatActivity {
                 null,
                 null,
                 null);
+        return cursor;
+    }
 
+    private void displayDatabaseInfo(Cursor cursor) {
         TextView displayView = (TextView) findViewById(R.id.txt_query_results);
-
         try {
             displayView.append(HabitEntry._ID + " - " +
                     HabitEntry.COLUMN_HABIT_NAME + " - " +

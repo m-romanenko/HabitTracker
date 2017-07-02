@@ -30,5 +30,8 @@ public class HabitDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        String SQL_DROP_HABITS_TABLE = "DROP TABLE IF EXISTS '" + HabitEntry.TABLE_NAME + "';";
+        db.execSQL(SQL_DROP_HABITS_TABLE);
+        onCreate(db);
     }
 }
